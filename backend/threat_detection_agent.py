@@ -1,7 +1,7 @@
 import time
 from firestore_connector import db # Import Firestore client
 from firebase_admin import firestore # Required for firestore.SERVER_TIMESTAMP
-from google.cloud.firestore_v1.query import FieldFilter # To filter documents
+from google.cloud.firestore import FieldFilter # To filter documents
 
 from twilio.rest import Client # For sending SMS alerts
 import os

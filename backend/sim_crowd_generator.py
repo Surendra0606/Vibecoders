@@ -10,7 +10,13 @@ bengaluru_locations = {
     "Koramangala 5th Block": {"lat": 12.9345, "lon": 77.6180},
     "Indiranagar 100 Feet Rd": {"lat": 12.9700, "lon": 77.6400},
     "Electronic City": {"lat": 12.8468, "lon": 77.6601},
-    "Cubbon Park": {"lat": 12.9758, "lon": 77.5922}
+    "Cubbon Park": {"lat": 12.9758, "lon": 77.5922},
+    "Marathahalli": {"lat": 12.9569, "lon": 77.7011},
+    "Kr puram": {"lat": 13.0170, "lon": 77.7044},
+    "Bhanashankari": {"lat": 12.9255, "lon": 77.5468},
+    "yeswanthpur": {"lat": 13.0250, "lon": 77.5340},
+
+    
 }
 
 def generate_single_crowd_data_point(location_name, coords):
