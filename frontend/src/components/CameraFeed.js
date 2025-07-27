@@ -13,20 +13,23 @@ const CameraFeed = () => {
 
   useEffect(() => {
     // Listen to a specific Firestore document where the camera image URL is updated.
-    // The backend script (sim_camera_feed_updater.py) writes to 'camera_feeds/demo_camera_1'.
-    const docRef = doc(db, 'camera_feeds', 'demo_camera_1'); 
-    
+    // CRITICAL FIX: Ensure this ID matches the one used by the backend updater script.
+    // The backend uses 'main_alert_camera_feed'.
+    const docRef = doc(db, 'camera_feeds', 'main_alert_camera_feed'); 
+
     // onSnapshot sets up a real-time listener for this specific document.
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
+        console.log("Hiii");
         // If the document exists, extract the data and update the component's state.
         const data = docSnap.data();
-        setImageUrl(data.image_url);
+        console.log(data);
+        setImageUrl(data.image_url); // This is where the image URL is read
         setLocationName(data.location_name || 'Simulated Camera'); // Use a fallback name
         setLoading(false); // Loading is complete
       } else {
         // If the document does not exist, log a message and clear the image.
-        console.log("No camera feed data found for 'demo_camera_1'. Please ensure backend updater is running.");
+        console.log("No camera feed data found for 'main_alert_camera_feed'. Please ensure backend updater is running and writing to this ID.");
         setImageUrl(''); // Clear the image if no data
         setLoading(false); // Loading is complete even if there's an error
       }
@@ -39,40 +42,42 @@ const CameraFeed = () => {
     return () => unsubscribe(); // Cleanup the listener when the component unmounts
   }, []); // Empty dependency array means this effect runs only once on component mount
 
+
+  console.log(imageUrl);
+  
   return (
-    <div class="camera-feed-container"> {/* Replaced Tailwind: space-y-4 */}
-      <h3 class="camera-feed-header">Simulated Camera Feed</h3> {/* Replaced Tailwind: text-lg font-bold text-gray-800 mb-3 */}
-      <div class="camera-feed-content-wrapper"> {/* Replaced Tailwind: bg-gray-200 rounded-lg overflow-hidden relative aspect-video */}
+   
+    <div class="camera-feed-container">
+      <h3 class="camera-feed-header">Simulated Camera Feed</h3>
+      <div class="camera-feed-content-wrapper">
         {loading ? (
-          // Display a loading message while the image is being fetched
-          <div class="camera-feed-loading-message"> {/* Replaced Tailwind: w-full h-full flex items-center justify-center text-gray-600 text-sm */}
+          <div class="camera-feed-loading-message">
             Loading Camera Feed...
           </div>
         ) : imageUrl ? (
-          // Display the image if imageUrl is available
           <img
             src={imageUrl}
             alt={`Simulated camera feed from ${locationName}`}
-            class="camera-feed-image" /* Replaced Tailwind: w-full h-full object-cover object-center */
+            class="camera-feed-image"
           />
         ) : (
-          // Display a message if no camera feed is available
-          <div class="camera-feed-no-feed-message"> {/* Replaced Tailwind: w-full h-full flex items-center justify-center text-gray-600 text-sm */}
+          <div class="camera-feed-no-feed-message">
             No Camera Feed Available
           </div>
         )}
+        
         {locationName && (
-          <div class="camera-feed-location-overlay"> {/* Replaced Tailwind: absolute bottom-0 left-0 bg-black bg-opacity-70 text-white text-sm px-3 py-1 rounded-tr-lg font-semibold */}
+          <div class="camera-feed-location-overlay">
             {locationName}
           </div>
         )}
         {imageUrl && ( // Only show LIVE tag if an image is actually loaded
-          <div class="camera-feed-live-tag"> {/* Replaced Tailwind: absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full font-bold */}
+          <div class="camera-feed-live-tag">
             LIVE
           </div>
         )}
       </div>
-      <p class="camera-feed-description">This feed updates periodically to simulate real-time visuals.</p> {/* Replaced Tailwind: text-sm text-gray-600 mt-4 text-center */}
+      <p class="camera-feed-description">This feed updates periodically to simulate real-time visuals.</p>
     </div>
   );
 };
